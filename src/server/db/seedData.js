@@ -2,12 +2,20 @@ const client = require("./client");
 
 // Drop Tables
 
+
 const table = () => {
   console.log("test function");
 };
 // Create Tables
 
 // Create Initial Users
+
+// Create Tables
+
+// Create Initial Users
+const createUsers = () => {
+  console.log("test 2");
+};
 
 // Create Initial Products
 
