@@ -1,20 +1,105 @@
 const client = require("./client");
 
-// Drop Tables
+const { createUser, createProduct } = require("./index");
 
-const table = () => {
-  console.log("test function");
-};
+async function buildTables() {
+  try {
+    client.connect();
+
+    await client.query(`
+        DROP TABLE IF EXISTS orders_products;
+        DROP TABLE IF EXISTS products;
+        DROP TABLE IF EXISTS orders;
+        DROP TABLE IF EXISTS users;
+      `);
+
+    console.log("Creating Users Table...");
+
+    await client.query(`
+    CREATE TABLE users(
+      id SERIAL PRIMARY KEY,
+      username VARCHAR(255) UNIQUE NOT NULL,
+      password VARCHAR(255) NOT NULL
+    );`);
+
+    console.log("Creating Orders Table...");
+
+    await client.query(`
+      CREATE TABLE orders(
+        id SERIAL PRIMARY KEY,
+        "userId" INTEGER REFERENCES users(id),
+        isActive BOOLEAN DEFAULT true
+      );
+        `);
+
+    console.log("Creating Products...");
+
+    await client.query(`
+        CREATE TABLE products(
+          id SERIAL PRIMARY KEY,
+          name VARCHAR(255) UNIQUE NOT NULL,
+          description TEXT,
+          price INTEGER,
+          stockQty INTEGER
+        );
+      `);
+
+    await client.query(`
+      CREATE TABLE orders_products(
+        "productId" INTEGER REFERENCES products(id),
+        "orderId" INTEGER REFERENCES orders(id)
+      );`);
+  } catch (error) {
+    throw error;
+  }
+}
 
 // Create Initial Users
-const createUsers = () => {
-  console.log("test 2");
-};
+async function seedDb() {
+  const users = [
+    {
+      username: "Pawan",
+      password: "12345678",
+    },
+    {
+      username: "Tim",
+      password: "87654321",
+    },
+  ];
 
-// Create Initial Products
+  const createdUsers = await Promise.all(users.map(createUser));
+  console.log("Users:", createdUsers);
 
-// Create Initial Orders
+  const products = [
+    {
+      name: "Banana",
+      description: "The most yellow of fruit",
+      price: 299,
+      stockQty: 100,
+    },
+    {
+      name: "Apple",
+      description: "A red one",
+      price: 199,
+      stockQty: 100,
+    },
+  ];
 
-// Create Rebuild Function which connects to clients runs each of the above functions
+  const createdProducts = await Promise.all(products.map(createProduct));
+  console.log("Products:", createdProducts);
 
-// Export the rebuild function to use in the seed.js file
+  try {
+  } catch (error) {
+    throw error;
+  }
+}
+
+buildTables()
+  .then(async () => {
+    console.log("db built!");
+    console.log("Seeding DB....");
+    await seedDb();
+    console.log("DB Seeded!");
+  })
+  .catch(console.error)
+  .finally(() => client.end());
