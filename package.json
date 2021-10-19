@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "db:build": "node src/server/db/seedData.js",
+    "db:build": "node server/db/seedData.js",
     "dev": "nodemon src/server",
     "start:dev": "parcel public/index.html --open & npm run dev",
     "build": "parcel build public/index.html"
