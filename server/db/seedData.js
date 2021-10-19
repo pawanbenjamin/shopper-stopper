@@ -1,6 +1,8 @@
 const client = require("./client");
 
 const { createUser, createProduct } = require("./index");
+const { createOrderByUserId } = require("./orders");
+const { addToCart } = require("./orders_products");
 
 async function buildTables() {
   try {
@@ -47,7 +49,8 @@ async function buildTables() {
     await client.query(`
       CREATE TABLE orders_products(
         "productId" INTEGER REFERENCES products(id),
-        "orderId" INTEGER REFERENCES orders(id)
+        "orderId" INTEGER REFERENCES orders(id),
+        qty INTEGER
       );`);
   } catch (error) {
     throw error;
@@ -67,8 +70,17 @@ async function seedDb() {
     },
   ];
 
+  console.log("Creating Users...");
   const createdUsers = await Promise.all(users.map(createUser));
   console.log("Users:", createdUsers);
+
+  console.log("Creating Orders...");
+  const createdOrders = await Promise.all(
+    createdUsers.map((user) => {
+      return createOrderByUserId(user.id);
+    })
+  );
+  console.log("Created Orders", createdOrders);
 
   const products = [
     {
@@ -85,8 +97,22 @@ async function seedDb() {
     },
   ];
 
+  console.log("Creating Products...");
   const createdProducts = await Promise.all(products.map(createProduct));
   console.log("Products:", createdProducts);
+
+  const carts = [
+    { orderId: 1, productId: 1, qty: 2 },
+    { orderId: 2, productId: 2, qty: 2 },
+  ];
+
+  console.log("Adding items to Cart...");
+  const createdCarts = await Promise.all(
+    carts.map((cart) => {
+      return addToCart(cart);
+    })
+  );
+  console.log("Carts:", createdCarts);
 
   try {
   } catch (error) {
