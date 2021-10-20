@@ -18,7 +18,50 @@ async function createOrderByUserId(userId) {
   }
 }
 
-// Get Cart (order that is active) and include everything
+async function getOrderById(orderId) {
+  try {
+    const {
+      rows: [order],
+    } = await client.query(
+      `
+    SELECT *
+          FROM orders 
+          INNER JOIN orders_products as op
+            ON op."orderId" = orders.id
+          INNER JOIN products as p
+          	ON op."productId" = p.id  
+     	    WHERE orders.id = $1 
+    `,
+      [orderId]
+    );
+    return order;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function getAllUserOrders(userId) {
+  try {
+    const {
+      rows: [orders],
+    } = await client.query(
+      `
+        SELECT * FROM orders 
+        INNER JOIN orders_products as op
+            ON op."orderId" = orders.id
+          INNER JOIN products as p
+          	ON op."productId" = p.id  
+     	    WHERE orders."userId" = $1   
+    `,
+      [userId]
+    );
+    return orders;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// * Get Cart (order that is active) and include everything
 async function getCart(userId) {
   try {
     const {
