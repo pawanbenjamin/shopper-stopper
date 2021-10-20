@@ -31,7 +31,7 @@ async function getCart(userId) {
             ON op."orderId" = orders.id
           INNER JOIN products as p
           	ON op."productId" = p.id  
-     	    WHERE orders."userId" = $1   
+     	    WHERE orders."userId" = $1 and orders.isActive = true 
     `,
       [userId]
     );
