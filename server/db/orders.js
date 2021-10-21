@@ -40,7 +40,7 @@ async function getOrderById(orderId) {
   }
 }
 
-async function getAllUserOrders(userId) {
+async function getAllOrdersByUserId(userId) {
   try {
     const {
       rows: [orders],

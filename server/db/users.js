@@ -14,8 +14,63 @@ async function createUser({ username, password }) {
     );
     return user;
   } catch (error) {
-    console.error(error);
+    throw error;
   }
 }
 
-module.exports = { createUser };
+async function getUser(userId) {
+  try {
+    const {
+      rows: [user],
+    } = await client.query(
+      `
+      SELECT * FROM users
+        WHERE id=$1
+    `,
+      [userId]
+    );
+    return user;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function updateUser({ userId, name, password }) {
+  try {
+    const {
+      rows: [user],
+    } = await client.query(
+      `
+      UPDATE users
+        SET name = $2, password = $3
+        WHERE id=$1
+        RETURNING *
+    `,
+      [userId, name, password]
+    );
+    return user;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// * Must delete Cart (orders_products) before using this function
+async function deleteUser(userId) {
+  try {
+    const {
+      rows: [user],
+    } = await client.query(
+      `
+      DELETE from users
+        WHERE id=$1
+        RETURNING *
+    `,
+      [userId]
+    );
+    return user;
+  } catch (error) {
+    throw error;
+  }
+}
+
+module.exports = { createUser, getUser, updateUser, deleteUser };
