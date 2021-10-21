@@ -18,6 +18,17 @@ async function createProduct({ name, description, price, stockQty }) {
   }
 }
 
+async function getAllProducts() {
+  try {
+    const { rows } = await client.query(`
+      SELECT * FROM products
+    `);
+    return rows;
+  } catch (error) {
+    throw error;
+  }
+}
+
 async function getProductById(productId) {
   try {
     const {
@@ -29,18 +40,13 @@ async function getProductById(productId) {
     `,
       [productId]
     );
+    return product;
   } catch (error) {
     throw error;
   }
 }
 
-async function updateProduct({
-  name,
-  description,
-  price,
-  stockQty,
-  productId,
-}) {
+async function updateProduct({ name, description, price, stockQty, id }) {
   try {
     const {
       rows: [product],
@@ -51,7 +57,7 @@ async function updateProduct({
             WHERE id=$5
             RETURNING *
     `,
-      [name, description, price, stockQty, productId]
+      [name, description, price, stockQty, id]
     );
     return product;
   } catch (error) {
@@ -72,6 +78,7 @@ async function deleteProduct(productId) {
     `,
       [productId]
     );
+    console.log("DELETED PRODUCT:", product);
     return product;
   } catch (error) {
     throw error;
@@ -79,6 +86,7 @@ async function deleteProduct(productId) {
 }
 
 module.exports = {
+  getAllProducts,
   createProduct,
   getProductById,
   updateProduct,

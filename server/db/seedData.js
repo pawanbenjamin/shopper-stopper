@@ -95,6 +95,12 @@ async function seedDb() {
       price: 199,
       stockQty: 100,
     },
+    {
+      name: "Pineapple",
+      description: "Yellow, pretty much",
+      price: 299,
+      stockQty: 300,
+    },
   ];
 
   console.log("Creating Products...");

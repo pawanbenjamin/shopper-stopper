@@ -13,6 +13,8 @@ app.use(volleyball);
 
 app.use("/users", require("./routes/usersRouter"));
 
+app.use("/products", require("./routes/productsRouter"));
+
 app.listen(PORT, () => {
   console.log(`Served up and listening on PORT ${PORT}`);
 });
