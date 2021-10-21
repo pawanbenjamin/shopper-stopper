@@ -84,4 +84,9 @@ async function getCart(userId) {
   }
 }
 
-module.exports = { createOrderByUserId };
+module.exports = {
+  createOrderByUserId,
+  getOrderById,
+  getAllOrdersByUserId,
+  getCart,
+};

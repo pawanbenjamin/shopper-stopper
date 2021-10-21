@@ -1,6 +1,12 @@
 const usersRouter = require("express").Router();
 
-const { createUser, getUser, updateUser, deleteUser } = require("../db");
+const {
+  createUser,
+  getUser,
+  updateUser,
+  deleteUser,
+  getCart,
+} = require("../db");
 
 usersRouter.get(`/:id`, async (req, res, next) => {
   try {
@@ -33,6 +39,15 @@ usersRouter.delete("/:id", async (req, res, next) => {
   try {
     await deleteUser(req.params.id);
     res.send("User Sucessfully Removed!");
+  } catch (error) {
+    next(error);
+  }
+});
+
+usersRouter.get("/:id/cart", async (req, res, next) => {
+  try {
+    const cart = await getCart(req.params.id);
+    res.send(cart);
   } catch (error) {
     next(error);
   }

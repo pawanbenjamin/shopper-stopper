@@ -6,7 +6,12 @@ const {
   updateProduct,
   deleteProduct,
 } = require("./products");
-const { createOrderByUserId } = require("./orders");
+const {
+  createOrderByUserId,
+  getOrderById,
+  getAllOrdersByUserId,
+  getCart,
+} = require("./orders");
 const { addToCart } = require("./orders_products");
 
 module.exports = {
@@ -20,5 +25,8 @@ module.exports = {
   updateProduct,
   deleteProduct,
   createOrderByUserId,
+  getOrderById,
+  getAllOrdersByUserId,
+  getCart,
   addToCart,
 };
