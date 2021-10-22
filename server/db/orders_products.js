@@ -1,6 +1,6 @@
 const client = require("./client");
 
-async function addToCart({ orderId, productId, qty }) {
+async function addToCart({ productId, orderId, qty }) {
   try {
     const {
       rows: [order_product],
@@ -10,7 +10,7 @@ async function addToCart({ orderId, productId, qty }) {
            VALUES($1, $2, $3)
            RETURNING * 
         `,
-      [orderId, productId, qty]
+      [productId, orderId, qty]
     );
     return order_product;
   } catch (error) {
@@ -21,7 +21,7 @@ async function addToCart({ orderId, productId, qty }) {
 async function removeFromCart({ productId, orderId }) {
   try {
     const {
-      row: [order_product],
+      rows: [order_product],
     } = await client.query(
       `
       DELETE FROM orders_products as op
@@ -30,6 +30,7 @@ async function removeFromCart({ productId, orderId }) {
     `,
       [productId, orderId]
     );
+    console.log("DB METHOD:", order_product);
     return order_product;
   } catch (error) {
     throw error;
@@ -39,7 +40,7 @@ async function removeFromCart({ productId, orderId }) {
 async function updateQtyInCart({ productId, orderId, qty }) {
   try {
     const {
-      row: [order_product],
+      rows: [order_product],
     } = await client.query(
       `
       UPDATE orders_products as op

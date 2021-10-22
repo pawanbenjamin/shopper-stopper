@@ -9,6 +9,7 @@ const {
   deleteOrderById,
 } = require("../db");
 
+// Get All Orders
 ordersRouter.get("/", async (req, res, next) => {
   try {
     const orders = await getAllOrders();
@@ -18,6 +19,7 @@ ordersRouter.get("/", async (req, res, next) => {
   }
 });
 
+// Get single order by orderId
 ordersRouter.get("/:id", async (req, res, next) => {
   try {
     const order = await getOrderById(req.params.id);
@@ -27,6 +29,7 @@ ordersRouter.get("/:id", async (req, res, next) => {
   }
 });
 
+// Create a order (cart) for a User
 ordersRouter.post("/user/:userId", async (req, res, next) => {
   try {
     const order = await createOrderByUserId(req.params.userId);
@@ -36,6 +39,7 @@ ordersRouter.post("/user/:userId", async (req, res, next) => {
   }
 });
 
+// Get a user's active order (cart)
 ordersRouter.get("/user/:userId/cart", async (req, res, next) => {
   try {
     const cart = await getCart(req.params.userId);
@@ -45,6 +49,7 @@ ordersRouter.get("/user/:userId/cart", async (req, res, next) => {
   }
 });
 
+// Get all of a User's orders
 ordersRouter.get("/user/:userId", async (req, res, next) => {
   try {
     const orders = await getAllOrdersByUserId(req.params.userId);
@@ -54,6 +59,7 @@ ordersRouter.get("/user/:userId", async (req, res, next) => {
   }
 });
 
+// Delete an order by orderId, (must not have through table associations)
 ordersRouter.delete("/:id", async (req, res, next) => {
   try {
     const deletedOrder = await deleteOrderById(req.params.id);
