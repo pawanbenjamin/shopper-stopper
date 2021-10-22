@@ -1,20 +1,18 @@
-const express = require('express')
-const volleyball = require('volleyball')
-const client = require('./db/client')
+const express = require("express");
+const volleyball = require("volleyball");
+const client = require("./db/client");
 
-const PORT = 3000
+const PORT = 5000;
 
-const app = express()
+const app = express();
 
-client.connect()
+client.connect();
 
-app.use(express.json())
-app.use(volleyball)
+app.use(express.json());
+app.use(volleyball);
 
-app.get('/', (req, res, next)=>{
-    res.send('Up and Running')
-})
+app.use("/api", require("./routes"));
 
-app.listen(PORT, ()=>{
-    console.log(`Served up and listening on PORT ${PORT}`)
-})
+app.listen(PORT, () => {
+  console.log(`Served up and listening on PORT ${PORT}`);
+});

@@ -35,18 +35,18 @@ async function getUser(userId) {
   }
 }
 
-async function updateUser({ userId, name, password }) {
+async function updateUser({ id, username, password }) {
   try {
     const {
       rows: [user],
     } = await client.query(
       `
       UPDATE users
-        SET name = $2, password = $3
+        SET username=$2, password=$3
         WHERE id=$1
         RETURNING *
     `,
-      [userId, name, password]
+      [id, username, password]
     );
     return user;
   } catch (error) {

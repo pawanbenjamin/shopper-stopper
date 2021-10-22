@@ -18,6 +18,17 @@ async function createOrderByUserId(userId) {
   }
 }
 
+async function getAllOrders() {
+  try {
+    const { rows } = await client.query(`
+      SELECT * FROM orders
+    `);
+    return rows;
+  } catch (error) {
+    throw error;
+  }
+}
+
 async function getOrderById(orderId) {
   try {
     const {
@@ -61,7 +72,7 @@ async function getAllOrdersByUserId(userId) {
   }
 }
 
-// * Get Cart (order that is active) and include everything
+// Get Cart (order that is active) and include everything
 async function getCart(userId) {
   try {
     const {
@@ -84,4 +95,44 @@ async function getCart(userId) {
   }
 }
 
-module.exports = { createOrderByUserId };
+async function purchaseCart(orderId) {
+  try {
+    const {
+      rows: [order],
+    } = await client.query(
+      `
+      UPDATE orders
+        SET isActive=true
+        WHERE id=$1
+    `,
+      [orderId]
+    );
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function deleteOrderById(orderId) {
+  try {
+    const deletedOrder = await client.query(
+      `
+      DELETE FROM orders
+        WHERE id=$1
+    `,
+      [orderId]
+    );
+    return deletedOrder;
+  } catch (error) {
+    throw error;
+  }
+}
+
+module.exports = {
+  createOrderByUserId,
+  getOrderById,
+  getAllOrdersByUserId,
+  getCart,
+  getAllOrders,
+  deleteOrderById,
+  purchaseCart,
+};
