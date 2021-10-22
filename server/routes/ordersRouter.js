@@ -7,6 +7,7 @@ const {
   getAllOrders,
   getCart,
   deleteOrderById,
+  purchaseCart,
 } = require("../db");
 
 // Get All Orders
@@ -54,6 +55,15 @@ ordersRouter.get("/user/:userId", async (req, res, next) => {
   try {
     const orders = await getAllOrdersByUserId(req.params.userId);
     res.send(orders);
+  } catch (error) {
+    next(error);
+  }
+});
+
+ordersRouter.put("/:orderId", async (req, res, next) => {
+  try {
+    const purchasedOrder = await purchaseCart(req.params.orderId);
+    res.send(purchasedOrder);
   } catch (error) {
     next(error);
   }

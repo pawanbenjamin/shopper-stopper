@@ -68,6 +68,14 @@ async function seedDb() {
       username: "Tim",
       password: "87654321",
     },
+    {
+      username: "Ben",
+      password: "12345678",
+    },
+    {
+      username: "Michael",
+      password: "98765432",
+    },
   ];
 
   console.log("Creating Users...");
@@ -100,6 +108,12 @@ async function seedDb() {
       description: "Yellow, pretty much",
       price: 299,
       stockQty: 300,
+    },
+    {
+      name: "Passion Fruit",
+      description: "A Tropical Delight",
+      price: 2999,
+      stockQty: 5,
     },
   ];
 

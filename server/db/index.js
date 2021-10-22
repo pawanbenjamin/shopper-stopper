@@ -14,6 +14,7 @@ const {
   getCart,
   getAllOrders,
   deleteOrderById,
+  purchaseCart,
 } = require("./orders");
 
 const {
@@ -41,4 +42,5 @@ module.exports = {
   addToCart,
   removeFromCart,
   updateQtyInCart,
+  purchaseCart,
 };

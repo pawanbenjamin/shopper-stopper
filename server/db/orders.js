@@ -72,7 +72,7 @@ async function getAllOrdersByUserId(userId) {
   }
 }
 
-// * Get Cart (order that is active) and include everything
+// Get Cart (order that is active) and include everything
 async function getCart(userId) {
   try {
     const {
@@ -90,6 +90,23 @@ async function getCart(userId) {
       [userId]
     );
     return cart;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function purchaseCart(orderId) {
+  try {
+    const {
+      rows: [order],
+    } = await client.query(
+      `
+      UPDATE orders
+        SET isActive=true
+        WHERE id=$1
+    `,
+      [orderId]
+    );
   } catch (error) {
     throw error;
   }
@@ -117,4 +134,5 @@ module.exports = {
   getCart,
   getAllOrders,
   deleteOrderById,
+  purchaseCart,
 };
