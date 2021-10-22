@@ -18,6 +18,19 @@ async function createOrderByUserId(userId) {
   }
 }
 
+async function getAllOrders() {
+  try {
+    const {
+      rows: [orders],
+    } = await client.query(`
+      SELECT * FROM orders
+    `);
+    return orders;
+  } catch (error) {
+    throw error;
+  }
+}
+
 async function getOrderById(orderId) {
   try {
     const {
@@ -84,9 +97,26 @@ async function getCart(userId) {
   }
 }
 
+async function deleteOrderById(orderId) {
+  try {
+    const deletedOrder = await client.query(
+      `
+      DELETE FROM orders
+        WHERE id=$1
+    `,
+      [orderId]
+    );
+    return deletedOrder;
+  } catch (error) {
+    throw error;
+  }
+}
+
 module.exports = {
   createOrderByUserId,
   getOrderById,
   getAllOrdersByUserId,
   getCart,
+  getAllOrders,
+  deleteOrderById,
 };
