@@ -36,4 +36,22 @@ async function removeFromCart({ productId, orderId }) {
   }
 }
 
-module.exports = { addToCart, removeFromCart };
+async function updateQtyInCart({ productId, orderId, qty }) {
+  try {
+    const {
+      row: [order_product],
+    } = await client.query(
+      `
+      UPDATE orders_products as op
+        SET qty=$3
+        WHERE "orderId"=$2 and "productId"=$1
+    `,
+      [productId, orderId, qty]
+    );
+    return order_product;
+  } catch (error) {
+    throw error;
+  }
+}
+
+module.exports = { addToCart, removeFromCart, updateQtyInCart };
