@@ -20,12 +20,10 @@ async function createOrderByUserId(userId) {
 
 async function getAllOrders() {
   try {
-    const {
-      rows: [orders],
-    } = await client.query(`
+    const { rows } = await client.query(`
       SELECT * FROM orders
     `);
-    return orders;
+    return rows;
   } catch (error) {
     throw error;
   }

@@ -16,7 +16,7 @@ const {
   deleteOrderById,
 } = require("./orders");
 
-const { addToCart } = require("./orders_products");
+const { addToCart, removeFromCart } = require("./orders_products");
 
 module.exports = {
   createUser,
@@ -35,4 +35,5 @@ module.exports = {
   getAllOrders,
   deleteOrderById,
   addToCart,
+  removeFromCart,
 };
